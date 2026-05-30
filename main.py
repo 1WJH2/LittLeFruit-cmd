@@ -2,6 +2,7 @@ import os
 import subprocess
 from time import sleep
 import random
+import shutil
 
 echo_or = 'on'
 random_mod_or = 'off'
@@ -30,7 +31,6 @@ add|添加文件 <绝对路径>
 del|删除文件 <绝对路径>
 sleep|等待 <时间>
 open|打开 <类型> [<file>, <website>, <folder>] 
-command|执行系统命令 <命令>
 cd|切换目录 [操作] <路径>
     操作:
         show:显示当前目录
@@ -55,12 +55,28 @@ data|LittLeFruit cmd数据管理 <操作> <数据名> <值>
               @exit:是否退出
 cmd|打开新的LittLeFruit cmd窗口
 command|执行系统命令 <命令>
-copy|复制 <类型> [<文件路径>, <路径>] [<目标路径>]
+copy|复制 <路径> <目标路径夹>
 exit|退出程序
               
 ''')
         elif 'cmd' == a.split()[0]:
             subprocess.Popen('start cmd /k python main.py', shell=True)
+        elif 'copy' == a.split()[0]:
+            try:
+                b = a.split()[1]
+                c = a.split()[1]
+            except:
+                print('\033[31m参数错误\033[0m')  
+            else:
+                if os.path.isfile(b):
+                    try:
+                        shutil.copy(b,c)
+                    except:
+                        print('\033[31m没有此文件夹\033[0m')
+                    else:
+                        print('\033[92m操作成功\033[0m')
+                else:
+                    print('\033[31m没有此文件\033[0m')
         elif 'del' in a.split()[0]:
             try:
                 b = a.split()[1] 
@@ -150,7 +166,7 @@ V1.2.1
               1.1.6:添加了随机数功能
               1.1.8:添加了数据管理功能
               1.2.0:添加了cmd命令,版本日志,exit功能,random功能
-              1.2.1:修复了若干BUG, 添加open, cd命令,把相对路径改为绝对路径,优化了代码结构
+              1.2.1:修复了若干BUG, 添加open, cd, command, copy命令,把相对路径改为绝对路径,优化了代码结构
 ''')
         elif 'exit' == a:
             if exit_or == 'on':
